@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
-import { useCart } from '@/components/cart'
 
 const links = [
   { label: 'Home', href: '#home' },
@@ -15,7 +14,6 @@ const links = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
-  const { count, openCart } = useCart()
 
   return (
     <motion.header
@@ -57,26 +55,14 @@ export function SiteHeader() {
         </ul>
 
         <div className="flex items-center gap-2">
-          {count > 0 ? (
-            <motion.button
-              type="button"
-              onClick={openCart}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="shrink-0 whitespace-nowrap rounded-full bg-primary px-3 py-2 font-serif text-sm font-medium text-primary-foreground transition-colors hover:bg-strawberry md:px-5 md:py-2.5"
-            >
-              Cart {count}
-            </motion.button>
-          ) : (
-            <motion.a
-              href="#menu"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="shrink-0 whitespace-nowrap rounded-full bg-primary px-3 py-2 font-serif text-sm font-medium text-primary-foreground transition-colors hover:bg-strawberry md:px-5 md:py-2.5"
-            >
-              Order Now
-            </motion.a>
-          )}
+          <motion.a
+            href="#menu"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            className="shrink-0 whitespace-nowrap rounded-full bg-primary px-3 py-2 font-serif text-sm font-medium text-primary-foreground transition-colors hover:bg-strawberry md:px-5 md:py-2.5"
+          >
+            Order Now
+          </motion.a>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}

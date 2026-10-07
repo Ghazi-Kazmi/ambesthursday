@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Minus, Plus, X } from 'lucide-react'
+import { Minus, Plus, ShoppingBag, X } from 'lucide-react'
 import { formatPrice } from '@/lib/menu-data'
 
 export const CAFE_ADDRESS = 'Mac 3 Heights, Sector G, Bahria Enclave, Islamabad'
@@ -67,8 +67,47 @@ export function CartProvider({ children }: { children: ReactNode }) {
   return (
     <CartContext.Provider value={value}>
       {children}
+      <CartFab />
       <CartDrawer />
     </CartContext.Provider>
+  )
+}
+
+function CartFab() {
+  const { count, open, openCart } = useCart()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
+  return createPortal(
+    <AnimatePresence>
+      {count > 0 && !open && (
+        <motion.button
+          type="button"
+          onClick={openCart}
+          initial={{ opacity: 0, y: 16, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.9 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          aria-label={`Open cart, ${count} items`}
+          className="fixed bottom-5 right-5 z-[60] flex items-center gap-3 rounded-full bg-primary py-3 pl-4 pr-3 text-primary-foreground shadow-[0_16px_40px_-12px_rgba(74,44,42,0.55)]"
+        >
+          <ShoppingBag className="size-5" aria-hidden="true" />
+          <span className="font-serif text-base">Cart</span>
+          <motion.span
+            key={count}
+            initial={{ scale: 0.4 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 18 }}
+            className="flex min-w-7 items-center justify-center rounded-full bg-strawberry px-2 py-1 text-sm font-semibold tabular-nums"
+          >
+            {count}
+          </motion.span>
+        </motion.button>
+      )}
+    </AnimatePresence>,
+    document.body,
   )
 }
 
@@ -142,7 +181,8 @@ function CartDrawer() {
             className="fixed inset-y-0 right-0 z-[80] flex w-full max-w-md flex-col bg-background text-foreground shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-border px-5 py-5">
-              <h2 id="cart-title" className="font-serif text-3xl">
+              <h2 id="cart-title" className="flex items-center gap-3 font-serif text-3xl">
+                <ShoppingBag className="size-7" strokeWidth={1.5} aria-hidden="true" />
                 Your order
               </h2>
               <button
