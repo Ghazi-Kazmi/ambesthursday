@@ -1,0 +1,94 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import 'lenis/dist/lenis.css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #fdf8f0;
+  --foreground: #4a2c2a;
+  --card: #fffbf5;
+  --card-foreground: #4a2c2a;
+  --popover: #fffbf5;
+  --popover-foreground: #4a2c2a;
+  --primary: #4a2c2a;
+  --primary-foreground: #fdf8f0;
+  --secondary: #f3eadc;
+  --secondary-foreground: #4a2c2a;
+  --muted: #f3eadc;
+  --muted-foreground: #7a5a55;
+  --accent: #f7dcd8;
+  --accent-foreground: #4a2c2a;
+  --strawberry: #c9404d;
+  --destructive: #c9404d;
+  --border: #eadccb;
+  --input: #eadccb;
+  --ring: #c9404d;
+  --radius: 1rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-karla);
+  --font-serif: var(--font-playfair);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-strawberry: var(--strawberry);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--foreground);
+  }
+}
+
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--foreground);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
