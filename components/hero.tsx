@@ -1,25 +1,66 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowDownRight, Sparkles } from 'lucide-react'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
+function keepPlaying(video: HTMLVideoElement) {
+  video.muted = true
+  video.defaultMuted = true
+  video.playsInline = true
+  video.setAttribute('muted', '')
+  video.setAttribute('playsinline', '')
+  video.setAttribute('webkit-playsinline', 'true')
+  const pending = video.play()
+  if (pending) pending.catch(() => {})
+}
+
 export function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    keepPlaying(video)
+    const play = () => keepPlaying(video)
+    video.addEventListener('loadeddata', play)
+    video.addEventListener('canplay', play)
+    video.addEventListener('ended', play)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') play()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('touchstart', play, { passive: true })
+    window.addEventListener('pageshow', play)
+    return () => {
+      video.removeEventListener('loadeddata', play)
+      video.removeEventListener('canplay', play)
+      video.removeEventListener('ended', play)
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('touchstart', play)
+      window.removeEventListener('pageshow', play)
+    }
+  }, [])
+
   return (
     <section id="home" className="relative flex min-h-svh items-center overflow-hidden bg-[#1a0e0c] px-4 pb-20 pt-32 md:px-6 md:pb-28 md:pt-40">
       <video
-        className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+        ref={videoRef}
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
+        controls={false}
+        disablePictureInPicture
         aria-hidden="true"
       >
         <source src="/hero-video/sansebestian.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 bg-black/60" aria-hidden="true" />
 
       <div className="relative mx-auto w-full max-w-6xl">
         <motion.p
