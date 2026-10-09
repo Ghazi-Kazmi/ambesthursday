@@ -117,13 +117,13 @@ const ZONES = [
   {
     id: 'phase1',
     label: 'Bahria Phase 1',
-    sectors: 'Sector A, B1, B2, C1, C2, C1 Extension, F',
+    sectors: 'Sector A, B, B1, B2, C, C1, C2, C3, E',
     fee: 200,
   },
   {
     id: 'phase2',
     label: 'Bahria Phase 2',
-    sectors: 'Sector G, H, I, J, K, L, M, N',
+    sectors: 'Sector F, F1 Extension, C1 ExtensionG, H, I, J, K, L, M, N, O, P',
     fee: 150,
   },
 ] as const
@@ -131,7 +131,7 @@ const ZONES = [
 type ZoneId = (typeof ZONES)[number]['id']
 type PayMethod = 'cod' | 'online'
 
-const EASYPAISA = { title: 'Amjad', number: '03301259555' }
+const EASYPAISA = { title: 'Harun Amjad Khan', number: '03495430119' }
 const RECEIPT_KEY = 'ambes-receipt'
 const AWAIT_KEY = 'ambes-await'
 const LEFT_KEY = 'ambes-left'
